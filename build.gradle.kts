@@ -15,14 +15,17 @@ repositories {
 
     mavenLocal()
     mavenCentral()
+
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
 
-    implementation("net.dv8tion:JDA:+")
+    implementation("net.dv8tion:JDA:3.8.2_459")
+
     implementation("me.camdenorrb:KDI:+")
     implementation("me.camdenorrb:MiniBus:+")
-    implementation("org.slf4j:slf4j-simple:+")
+    implementation("me.camdenorrb:KCommons:+")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
 

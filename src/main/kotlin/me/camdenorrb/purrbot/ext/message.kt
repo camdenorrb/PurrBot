@@ -2,7 +2,7 @@ package me.camdenorrb.purrbot.ext
 
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.core.entities.Message
 import java.awt.Color
 
 fun Message.deleteAndLog() {

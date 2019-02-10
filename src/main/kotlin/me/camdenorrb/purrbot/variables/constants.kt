@@ -1,4 +1,4 @@
-package me.camdenorrb.purrbot.`var`
+package me.camdenorrb.purrbot.variables
 
 import java.text.DecimalFormat
 

@@ -11,8 +11,8 @@ import me.camdenorrb.purrbot.events.ScrambleTimeoutEvent
 import me.camdenorrb.purrbot.events.ScrambleWinEvent
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.entities.Member
 import java.awt.Color
 import java.io.File
 

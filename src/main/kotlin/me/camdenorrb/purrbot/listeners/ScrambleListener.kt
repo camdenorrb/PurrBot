@@ -4,8 +4,8 @@ import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.ext.format
 import me.camdenorrb.purrbot.tasks.ScrambleTask
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
-import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.core.hooks.ListenerAdapter
 import java.awt.Color
 import java.io.File
 

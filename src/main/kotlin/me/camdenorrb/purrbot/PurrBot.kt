@@ -6,17 +6,17 @@ import me.camdenorrb.purrbot.listeners.ModListener
 import me.camdenorrb.purrbot.listeners.ScrambleListener
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.tasks.ScrambleTask
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.events.Event
-import net.dv8tion.jda.api.events.ReadyEvent
-import net.dv8tion.jda.api.hooks.EventListener
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.events.Event
+import net.dv8tion.jda.core.events.ReadyEvent
+import net.dv8tion.jda.core.hooks.EventListener
 
 class PurrBot(token: String) : Module(), EventListener {
 
     val miniBus = MiniBus()
 
-    val builder = JDABuilder(token).addEventListeners(this, ModListener())
+    val builder = JDABuilder(token).addEventListener(this, ModListener())
 
 
     lateinit var bot: JDA
@@ -36,7 +36,7 @@ class PurrBot(token: String) : Module(), EventListener {
         bot.addEventListener(ScrambleListener(ScrambleTask(bot).apply { enable() }))
 
         println("\nThe bot is now ready")
-        println("Invite URL: ${bot.getInviteUrl()}")
+        println("Invite URL: ${bot.asBot().getInviteUrl()}")
     }
 
 }
