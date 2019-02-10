@@ -1,0 +1,13 @@
+# Private local files
+token.txt
+
+# Generated files from program
+newWords.txt
+
+
+# Environment
+out
+build
+
+.idea
+.gradle

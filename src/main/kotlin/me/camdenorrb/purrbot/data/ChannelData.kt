@@ -1,0 +1,19 @@
+package me.camdenorrb.purrbot.data
+
+object ChannelData {
+
+    const val INTRO_ID = 528082386655772672
+
+    const val SNAPCODE_ID = 534536349475143723
+
+    const val MAIN_CHAT_ID = 528073417698574349
+
+    const val COUNT_TO_3K_ID = 528146054848446464
+
+    const val PURR_LOGGING_ID = 543219407502180352
+
+    const val LOGO_CONTEST_ID = 541674030923513866
+
+    const val ONE_WORD_STORY_ID = 528146136310218762
+
+}
