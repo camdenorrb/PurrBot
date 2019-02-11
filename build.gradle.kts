@@ -21,6 +21,8 @@ repositories {
 
 dependencies {
 
+    implementation("com.squareup.okhttp3:okhttp:3.13.1")
+
     implementation("net.dv8tion:JDA:3.8.2_459")
 
     implementation("me.camdenorrb:KDI:+")

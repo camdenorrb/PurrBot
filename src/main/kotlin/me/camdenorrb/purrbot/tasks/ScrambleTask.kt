@@ -40,7 +40,7 @@ class ScrambleTask(val client: JDA, val miniBus: MiniBus = inject()) : Module() 
 
         timer = GlobalScope.launch {
             while (true) {
-                delay(1_200_000)
+                delay(900_000)
                 onTick()
             }
         }
