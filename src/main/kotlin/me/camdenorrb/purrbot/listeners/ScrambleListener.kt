@@ -35,7 +35,7 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
             ScrambleRank.values().find { it.id == role.idLong }
         }
 
-        if (currentRank == discordRank) return
+        if (currentRank == discordRank?.second) return
 
         val guild = member.guild
 
