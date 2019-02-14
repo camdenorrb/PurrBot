@@ -42,17 +42,13 @@ class PurrBot(token: String) : Module(), EventListener {
 
         val mainChat = bot.getTextChannelById(ChannelData.MAIN_CHAT_ID)
 
-        val scrambleListener = ScrambleListener(ScrambleTask(bot, mainChat, memberStore).apply { enable() }, memberStore)
+        val scrambleListener = ScrambleListener(ScrambleTask(mainChat, memberStore).apply { enable() }, memberStore)
 
         miniBus.register(scrambleListener)
         bot.addEventListener(scrambleListener)
 
         println("\nThe bot is now ready")
         println("Invite URL: ${bot.asBot().getInviteUrl()}")
-
-        //val builder = MessageBuilder(embed).append(member.asMention)
-        //mainChat.sendMessage(builder.build()).queue()
-
     }
 
 }

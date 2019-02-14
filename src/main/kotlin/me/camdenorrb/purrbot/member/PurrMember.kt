@@ -3,13 +3,13 @@ package me.camdenorrb.purrbot.member
 import net.dv8tion.jda.core.entities.Member
 import java.io.File
 
-class PurrMember(member: Member) : Member by member {
+class PurrMember(val member: Member) {
 
     private var wins: Long? = null
 
 
     val winnerFile by lazy {
-        File("Winners", user.id)
+        File("Winners", member.user.id)
     }
 
 
@@ -27,5 +27,4 @@ class PurrMember(member: Member) : Member by member {
         wins = value
         winnerFile.writeText("$value")
     }
-
 }

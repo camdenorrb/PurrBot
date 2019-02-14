@@ -11,13 +11,12 @@ import me.camdenorrb.purrbot.events.ScrambleWinEvent
 import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.TextChannel
 import java.awt.Color
 import java.io.File
 
-class ScrambleTask(val client: JDA, val channel: TextChannel, val memberStore: MemberStore, val miniBus: MiniBus = inject()) : Module() {
+class ScrambleTask(val channel: TextChannel, val memberStore: MemberStore, val miniBus: MiniBus = inject()) : Module() {
 
     private lateinit var timer: Job
 
