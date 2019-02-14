@@ -6,17 +6,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.camdenorrb.kdi.ext.inject
 import me.camdenorrb.minibus.MiniBus
-import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.events.ScrambleTimeoutEvent
 import me.camdenorrb.purrbot.events.ScrambleWinEvent
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.utils.createEmbed
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.TextChannel
 import java.awt.Color
 import java.io.File
 
-class ScrambleTask(val client: JDA, val miniBus: MiniBus = inject()) : Module() {
+class ScrambleTask(val client: JDA, val channel: TextChannel, val miniBus: MiniBus = inject()) : Module() {
 
     private lateinit var timer: Job
 
@@ -29,10 +29,6 @@ class ScrambleTask(val client: JDA, val miniBus: MiniBus = inject()) : Module() 
 
     private val words by lazy {
         File("words.txt").readLines()
-    }
-
-    private val mainChatChannel by lazy {
-        client.getTextChannelById(ChannelData.MAIN_CHAT_ID)
     }
 
 
@@ -78,7 +74,7 @@ class ScrambleTask(val client: JDA, val miniBus: MiniBus = inject()) : Module() 
             setTitle("The first to unscramble the word '${word.scramble()}' wins!")
         }
 
-        mainChatChannel.sendMessage(embed1).queue()
+        channel.sendMessage(embed1).queue()
 
 
         GlobalScope.launch {
@@ -95,7 +91,7 @@ class ScrambleTask(val client: JDA, val miniBus: MiniBus = inject()) : Module() 
             }
 
             solved(null)
-            mainChatChannel.sendMessage(embed2).queue()
+            channel.sendMessage(embed2).queue()
         }
 
     }

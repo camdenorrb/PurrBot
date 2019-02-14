@@ -2,8 +2,10 @@ package me.camdenorrb.purrbot
 
 import me.camdenorrb.kdi.KDI
 import me.camdenorrb.minibus.MiniBus
+import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.listeners.ModListener
 import me.camdenorrb.purrbot.listeners.ScrambleListener
+import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.tasks.ScrambleTask
 import net.dv8tion.jda.core.JDA
@@ -22,6 +24,9 @@ class PurrBot(token: String) : Module(), EventListener {
     lateinit var bot: JDA
         private set
 
+    lateinit var memberStore: MemberStore
+        private set
+
 
     override fun onEnable() {
         KDI.insert { miniBus }
@@ -33,10 +38,15 @@ class PurrBot(token: String) : Module(), EventListener {
 
         if (event !is ReadyEvent) return
 
-        bot.addEventListener(ScrambleListener(ScrambleTask(bot).apply { enable() }))
+        memberStore = MemberStore(bot.getGuildById(528073417698574346))
+        bot.addEventListener(ScrambleListener(ScrambleTask(bot, bot.getTextChannelById(ChannelData.MAIN_CHAT_ID)).apply { enable() }, memberStore))
 
         println("\nThe bot is now ready")
         println("Invite URL: ${bot.asBot().getInviteUrl()}")
+
+        //val builder = MessageBuilder(embed).append(member.asMention)
+        //mainChat.sendMessage(builder.build()).queue()
+
     }
 
 }
