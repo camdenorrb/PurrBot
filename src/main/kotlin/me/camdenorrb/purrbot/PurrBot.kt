@@ -39,7 +39,13 @@ class PurrBot(token: String) : Module(), EventListener {
         if (event !is ReadyEvent) return
 
         memberStore = MemberStore(bot.getGuildById(528073417698574346))
-        bot.addEventListener(ScrambleListener(ScrambleTask(bot, bot.getTextChannelById(ChannelData.MAIN_CHAT_ID)).apply { enable() }, memberStore))
+
+        val mainChat = bot.getTextChannelById(ChannelData.MAIN_CHAT_ID)
+
+        val scrambleListener = ScrambleListener(ScrambleTask(bot, mainChat, memberStore).apply { enable() }, memberStore)
+
+        miniBus.register(scrambleListener)
+        bot.addEventListener(scrambleListener)
 
         println("\nThe bot is now ready")
         println("Invite URL: ${bot.asBot().getInviteUrl()}")

@@ -8,6 +8,7 @@ import me.camdenorrb.kdi.ext.inject
 import me.camdenorrb.minibus.MiniBus
 import me.camdenorrb.purrbot.events.ScrambleTimeoutEvent
 import me.camdenorrb.purrbot.events.ScrambleWinEvent
+import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.utils.createEmbed
 import net.dv8tion.jda.core.JDA
@@ -16,7 +17,7 @@ import net.dv8tion.jda.core.entities.TextChannel
 import java.awt.Color
 import java.io.File
 
-class ScrambleTask(val client: JDA, val channel: TextChannel, val miniBus: MiniBus = inject()) : Module() {
+class ScrambleTask(val client: JDA, val channel: TextChannel, val memberStore: MemberStore, val miniBus: MiniBus = inject()) : Module() {
 
     private lateinit var timer: Job
 
@@ -51,7 +52,11 @@ class ScrambleTask(val client: JDA, val channel: TextChannel, val miniBus: MiniB
     fun solved(winner: Member?) {
 
         if (winner != null) {
-            miniBus(ScrambleWinEvent(winner, this))
+
+            val member = memberStore.getOrMake(winner)
+            member.setWins(member.getWins() + 1)
+
+            miniBus(ScrambleWinEvent(member, this))
         }
         else {
             miniBus(ScrambleTimeoutEvent(this))

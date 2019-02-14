@@ -1,6 +1,6 @@
 package me.camdenorrb.purrbot.events
 
+import me.camdenorrb.purrbot.member.PurrMember
 import me.camdenorrb.purrbot.tasks.ScrambleTask
-import net.dv8tion.jda.core.entities.Member
 
-data class ScrambleWinEvent(val winner: Member, val scrambleTask: ScrambleTask)
+data class ScrambleWinEvent(val winner: PurrMember, val scrambleTask: ScrambleTask)

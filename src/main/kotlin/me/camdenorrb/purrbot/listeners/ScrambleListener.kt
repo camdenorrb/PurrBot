@@ -1,6 +1,7 @@
 package me.camdenorrb.purrbot.listeners
 
 import me.camdenorrb.minibus.event.EventWatcher
+import me.camdenorrb.minibus.listener.MiniListener
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.events.ScrambleWinEvent
 import me.camdenorrb.purrbot.ext.findPair
@@ -15,7 +16,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter
 import java.awt.Color
 import java.io.File
 
-class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberStore) : ListenerAdapter() {
+class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberStore) : ListenerAdapter(), MiniListener {
 
     private val winnerFolder = File("Winners").apply { mkdirs() }
 
@@ -23,7 +24,7 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
     @EventWatcher
     fun onWin(event: ScrambleWinEvent) {
 
-        val winner = memberStore.getOrMake(event.winner)
+        val winner = event.winner
         val wins = winner.getWins()
 
         val currentRank = ScrambleRank.byWins(wins) ?: return
@@ -67,23 +68,16 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
         }
 
 
+        scrambleTask.solved(event.member)
+
+
+        val wins = memberStore.getOrMake(event.member).getWins() + 1
+
         val timeInSeconds = (System.currentTimeMillis() - createdTime) / 1000.0
 
         val embed = createEmbed {
             setColor(Color.GREEN)
-            setTitle("${event.author.asTag} has unscrambled the word '$currentWord' in ${timeInSeconds.format()} seconds!")
-        }
-
-
-        scrambleTask.solved(event.member)
-
-        val winnerFile = File(winnerFolder, event.author.id)
-
-        if (winnerFile.createNewFile()) {
-            winnerFile.writeText("1")
-        }
-        else {
-            winnerFile.writeText("${winnerFile.readText().toInt() + 1}")
+            setTitle("${event.author.asTag} has unscrambled the word '$currentWord' in ${timeInSeconds.format()} seconds and currently has $wins wins!")
         }
 
         event.channel.sendMessage(embed).queue()
