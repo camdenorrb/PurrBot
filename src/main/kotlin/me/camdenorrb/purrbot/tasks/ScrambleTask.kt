@@ -16,9 +16,10 @@ import net.dv8tion.jda.core.entities.TextChannel
 import java.awt.Color
 import java.io.File
 
-class ScrambleTask(val channel: TextChannel, val memberStore: MemberStore, val miniBus: MiniBus = inject()) : Module() {
+class ScrambleTask(val memberStore: MemberStore, val miniBus: MiniBus, val channel: TextChannel = inject("mainChat")) : Module() {
 
     private lateinit var timer: Job
+
 
     var startTime: Long? = null
         private set
@@ -53,7 +54,7 @@ class ScrambleTask(val channel: TextChannel, val memberStore: MemberStore, val m
         if (winner != null) {
 
             val member = memberStore.getOrMake(winner)
-            member.setWins(member.getWins() + 1)
+            member.scramblerData.wins += 1
 
             miniBus(ScrambleWinEvent(member, this))
         }

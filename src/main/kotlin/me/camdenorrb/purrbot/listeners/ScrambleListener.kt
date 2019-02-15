@@ -12,6 +12,7 @@ import me.camdenorrb.purrbot.tasks.ScrambleTask
 import me.camdenorrb.purrbot.utils.createEmbed
 import me.camdenorrb.purrbot.variables.SYMBOLS_REGEX
 import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
 import java.awt.Color
@@ -28,7 +29,7 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
         val winner = event.winner
         val member = winner.member
 
-        val wins = winner.getWins()
+        val wins = winner.scramblerData.wins
         val currentRank = ScrambleRank.byWins(wins) ?: return
 
         val discordRank = member.roles.findPair { role ->
@@ -43,7 +44,7 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
             guild.controller.removeSingleRoleFromMember(member, discordRank.first).queue()
         }
 
-        guild.controller.addRolesToMember(member, guild.getRoleById(currentRank.id)).queue()
+        guild.controller.addSingleRoleToMember(member, guild.getRoleById(currentRank.id)).queue()
 
         val embed = createEmbed {
             setColor(Color.CYAN.darker())
@@ -52,6 +53,20 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
 
         val builder = MessageBuilder(embed).append(member.asMention)
         event.scrambleTask.channel.sendMessage(builder.build()).queue()
+    }
+
+    override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
+
+        val winnerFile = File(winnerFolder, event.user.id)
+        if (!winnerFile.exists()) return
+
+        val guild = event.guild
+        val member = event.member
+
+        val wins = memberStore.getOrMake(member).scramblerData.wins
+        val rank = ScrambleRank.byWins(wins)?.let { guild.getRoleById(it.id) } ?: return
+
+        guild.controller.addSingleRoleToMember(member, rank).queue()
     }
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
@@ -70,7 +85,7 @@ class ScrambleListener(val scrambleTask: ScrambleTask, val memberStore: MemberSt
         }
 
 
-        val wins = memberStore.getOrMake(event.member).getWins() + 1
+        val wins = memberStore.getOrMake(event.member).scramblerData.wins + 1
 
         val timeInSeconds = (System.currentTimeMillis() - createdTime) / 1000.0
 

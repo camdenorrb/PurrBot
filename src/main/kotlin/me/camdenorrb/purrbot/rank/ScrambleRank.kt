@@ -20,17 +20,17 @@ enum class ScrambleRank(val displayName: String, val id: Long, val minWins: Int)
 
         fun byWins(totalWins: Long): ScrambleRank? = when {
 
-            totalWins >= 500 -> MERCURY
-            totalWins >= 200 -> HERMES
-            totalWins >= 160 -> ORTHOGRAPHER
-            totalWins >= 125 -> LITERARIAN
-            totalWins >= 100 -> LITERATOR
-            totalWins >= 80 -> WORDSMITH
-            totalWins >= 60 -> LIBRARIAN
-            totalWins >= 40 -> BOOKWORM
-            totalWins >= 20 -> UNSCRAMBLER
-            totalWins >= 10 -> LITERATE
-            totalWins >= 1 -> UNLETTERED
+            totalWins >= MERCURY.minWins -> MERCURY
+            totalWins >= HERMES.minWins -> HERMES
+            totalWins >= ORTHOGRAPHER.minWins -> ORTHOGRAPHER
+            totalWins >= LITERARIAN.minWins -> LITERARIAN
+            totalWins >= LITERATOR.minWins -> LITERATOR
+            totalWins >= WORDSMITH.minWins -> WORDSMITH
+            totalWins >= LIBRARIAN.minWins -> LIBRARIAN
+            totalWins >= BOOKWORM.minWins -> BOOKWORM
+            totalWins >= UNSCRAMBLER.minWins -> UNSCRAMBLER
+            totalWins >= LITERATE.minWins -> LITERATE
+            totalWins >= UNLETTERED.minWins -> UNLETTERED
 
             else -> null
         }

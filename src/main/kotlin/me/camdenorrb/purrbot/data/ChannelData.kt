@@ -2,9 +2,13 @@ package me.camdenorrb.purrbot.data
 
 object ChannelData {
 
+    const val CATS_ID = 528126020281434122
+
     const val INTRO_ID = 528082386655772672
 
     const val SNAPCODE_ID = 534536349475143723
+
+    const val BOT_CMDS_ID = 528085989281890334
 
     const val MAIN_CHAT_ID = 528073417698574349
 
