@@ -1,29 +1,34 @@
 package me.camdenorrb.purrbot
 
+import me.camdenorrb.kcommons.base.ModuleStruct
 import me.camdenorrb.kdi.KDI
 import me.camdenorrb.kdi.ext.inject
-import me.camdenorrb.minibus.MiniBus
 import me.camdenorrb.purrbot.cmd.impl.CatCmd
 import me.camdenorrb.purrbot.cmd.impl.LeaderBoardCmd
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.data.GuildData
+import me.camdenorrb.purrbot.game.impl.ScrambleGame
+import me.camdenorrb.purrbot.game.manager.GameManager
 import me.camdenorrb.purrbot.listeners.ModListener
-import me.camdenorrb.purrbot.listeners.ScrambleListener
 import me.camdenorrb.purrbot.store.CmdStore
 import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.store.ScramblerStore
-import me.camdenorrb.purrbot.struct.Module
-import me.camdenorrb.purrbot.tasks.ScrambleTask
-import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.api.JDA
 import java.io.File
 
-class PurrBot(val jda: JDA = inject()) : Module() {
+class PurrBot(val jda: JDA = inject()) : ModuleStruct() {
 
-    val miniBus = MiniBus()
+    override val name = "PurrBot"
+
+
+    val gameManager = GameManager(300_000, 600_000)
+
+    val scramblerFolder = File("Scramblers").apply { mkdirs() }
+
 
     val cmdStore = CmdStore()
 
-    val scramblerStore = ScramblerStore(File("Scramblers").apply { mkdirs() })
+    val scramblerStore = ScramblerStore(scramblerFolder)
 
     val memberStore = MemberStore(mainGuild, scramblerStore)
 
@@ -33,17 +38,16 @@ class PurrBot(val jda: JDA = inject()) : Module() {
 
     override fun onEnable() {
 
-        modules.forEach { it.enable() }
+        cmdStore.register(CatCmd(), LeaderBoardCmd(scramblerStore))
 
         KDI.insert("mainChat") { jda.getTextChannelById(ChannelData.MAIN_CHAT_ID) }
 
-        val scrambleTask = ScrambleTask(memberStore, miniBus).apply { enable() }
-        val scrambleListener = ScrambleListener(scrambleTask, memberStore)
+        modules.forEach { it.enable() }
 
-        miniBus.register(scrambleListener)
-        jda.addEventListener(ModListener(), scrambleListener)
+        gameManager.register(ScrambleGame(scramblerFolder, memberStore))
+        gameManager.enable()
 
-        cmdStore.register(CatCmd(), LeaderBoardCmd(scramblerStore))
+        jda.addEventListener(ModListener())
     }
 
     override fun onDisable() {

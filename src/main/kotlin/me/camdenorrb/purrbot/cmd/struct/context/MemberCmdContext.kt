@@ -1,12 +1,12 @@
 package me.camdenorrb.purrbot.cmd.struct.context
 
 import me.camdenorrb.kcommons.cmd.CmdContext
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.entities.MessageChannel
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.MessageChannel
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
 data class MemberCmdContext(val member: Member, val args: List<String>, val guild: Guild, val jda: JDA, val channel: MessageChannel, val message: Message, val event: MessageReceivedEvent) : CmdContext {
 

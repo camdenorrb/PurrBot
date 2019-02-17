@@ -1,5 +1,7 @@
 # Private local files
 token.txt
+words (Old).txt
+words.txt
 
 # Generated files from program
 newWords.txt

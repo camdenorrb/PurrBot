@@ -2,14 +2,14 @@ package me.camdenorrb.purrbot.store
 
 import me.camdenorrb.kcommons.store.struct.MappedStore
 import me.camdenorrb.kdi.ext.inject
+import me.camdenorrb.minibus.event.EventWatcher
+import me.camdenorrb.minibus.listener.MiniListener
 import me.camdenorrb.purrbot.cmd.struct.MemberCmd
 import me.camdenorrb.purrbot.cmd.struct.context.MemberCmdContext
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.events.Event
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent
-import net.dv8tion.jda.core.hooks.EventListener
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-class CmdStore(val jda: JDA = inject()) : MappedStore<String, MemberCmd>(), EventListener {
+class CmdStore(val jda: JDA = inject()) : MappedStore<String, MemberCmd>(), MiniListener {
 
     override val name = "Command Store"
 
@@ -21,11 +21,6 @@ class CmdStore(val jda: JDA = inject()) : MappedStore<String, MemberCmd>(), Even
     override fun onDisable() {
         jda.removeEventListener(this)
         super.onDisable()
-    }
-
-
-    override fun onEvent(event: Event?) {
-        if (event is MessageReceivedEvent) onMessageReceived(event)
     }
 
 
@@ -42,7 +37,8 @@ class CmdStore(val jda: JDA = inject()) : MappedStore<String, MemberCmd>(), Even
     }
 
 
-    private fun onMessageReceived(event: MessageReceivedEvent) {
+    @EventWatcher
+    fun onMessageReceived(event: MessageReceivedEvent) {
 
         val content = event.message.contentStripped
         if (!content.startsWith("$")) return

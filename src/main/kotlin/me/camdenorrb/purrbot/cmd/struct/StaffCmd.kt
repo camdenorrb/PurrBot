@@ -1,8 +1,8 @@
 package me.camdenorrb.purrbot.cmd.struct
 
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.MessageChannel
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.MessageChannel
 
 abstract class StaffCmd(vararg aliases: String) : MemberCmd(*aliases) {
 

@@ -2,17 +2,21 @@ package me.camdenorrb.purrbot
 
 import com.google.gson.Gson
 import me.camdenorrb.kdi.KDI
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.JDABuilder
-import net.dv8tion.jda.core.events.Event
-import net.dv8tion.jda.core.events.ReadyEvent
-import net.dv8tion.jda.core.hooks.EventListener
+import me.camdenorrb.minibus.MiniBus
+import me.camdenorrb.minibus.event.EventWatcher
+import me.camdenorrb.minibus.listener.MiniListener
+import me.camdenorrb.purrbot.impl.MiniEventManager
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.events.ReadyEvent
 import okhttp3.OkHttpClient
 import java.io.File
 
-object Main : EventListener {
+object Main : MiniListener {
 
     val gson = Gson()
+
+    val miniBus = MiniBus()
 
     val okHttpClient = OkHttpClient()
 
@@ -24,24 +28,26 @@ object Main : EventListener {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val builder = JDABuilder(File("token.txt").readText()).addEventListener(this)
-        jda = builder.build()
+        jda = JDABuilder(File("token.txt").readText())
+            .addEventListeners(this)
+            .setEventManager(MiniEventManager(miniBus))
+            .build()
 
         KDI.insertAll {
             producer { jda }
             producer { gson }
+            producer { miniBus }
             producer { okHttpClient }
         }
     }
 
-    override fun onEvent(event: Event) {
-
-        if (event !is ReadyEvent) return
+    @EventWatcher
+    private fun onReady(event: ReadyEvent) {
 
         PurrBot().enable()
 
         println("\nThe bot is now ready")
-        println("Invite URL: ${jda.asBot().getInviteUrl()}")
+        println("Invite URL: ${jda.getInviteUrl()}")
     }
 
 }

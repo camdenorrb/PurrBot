@@ -1,22 +1,22 @@
 package me.camdenorrb.purrbot.tasks
-
+/*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.camdenorrb.kdi.ext.inject
 import me.camdenorrb.minibus.MiniBus
-import me.camdenorrb.purrbot.events.ScrambleTimeoutEvent
-import me.camdenorrb.purrbot.events.ScrambleWinEvent
+import me.camdenorrb.purrbot.events.scramble.ScrambleTimeoutEvent
+import me.camdenorrb.purrbot.events.scramble.ScrambleWinEvent
 import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.struct.Module
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.TextChannel
+import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.entities.TextChannel
 import java.awt.Color
 import java.io.File
 
-class ScrambleTask(val memberStore: MemberStore, val miniBus: MiniBus, val channel: TextChannel = inject("mainChat")) : Module() {
+class ScrambleTask(val memberStore: MemberStore, val miniBus: MiniBus = inject(), val channel: TextChannel = inject("mainChat")) : Module() {
 
     private lateinit var timer: Job
 
@@ -37,7 +37,7 @@ class ScrambleTask(val memberStore: MemberStore, val miniBus: MiniBus, val chann
 
         timer = GlobalScope.launch {
             while (true) {
-                delay(900_000)
+                delay(600_000)
                 onTick()
             }
         }
@@ -107,13 +107,11 @@ class ScrambleTask(val memberStore: MemberStore, val miniBus: MiniBus, val chann
 
         var shuffled = chars.shuffled()
 
-
         while (shuffled == chars) {
             shuffled = chars.shuffled()
         }
 
-
         return shuffled.joinToString("")
     }
 
-}
+}*/

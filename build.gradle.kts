@@ -21,8 +21,8 @@ repositories {
 
 dependencies {
 
+    implementation("net.dv8tion:JDA:+")
     implementation("org.slf4j:slf4j-simple:+")
-    implementation("net.dv8tion:JDA:3.8.2_459")
     implementation("com.google.code.gson:gson:2.8.5")
 
     implementation("com.squareup.okhttp3:okhttp:3.13.1")
@@ -31,6 +31,7 @@ dependencies {
     implementation("me.camdenorrb:MiniBus:+")
     implementation("me.camdenorrb:KCommons:+")
 
+    implementation("org.jetbrains.kotlin:kotlin-reflect:+")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
 
     implementation(kotlin("stdlib-jdk8"))
@@ -41,5 +42,5 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-    mainClassName = "me/camdenorrb/purrbot/MainKt"
+    mainClassName = "me/camdenorrb/purrbot/Main"
 }

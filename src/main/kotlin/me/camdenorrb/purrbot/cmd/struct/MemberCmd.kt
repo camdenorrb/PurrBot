@@ -4,8 +4,8 @@ import me.camdenorrb.kcommons.base.Named
 import me.camdenorrb.kcommons.cmd.Cmd
 import me.camdenorrb.purrbot.cmd.struct.context.MemberCmdContext
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.core.entities.*
-import net.dv8tion.jda.core.exceptions.InsufficientPermissionException
+import net.dv8tion.jda.api.entities.*
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException
 
 abstract class MemberCmd(vararg aliases: String) : Cmd<MemberCmdContext>, Named {
 

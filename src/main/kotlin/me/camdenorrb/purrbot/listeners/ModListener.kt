@@ -1,18 +1,20 @@
 package me.camdenorrb.purrbot.listeners
 
+import me.camdenorrb.minibus.event.EventWatcher
+import me.camdenorrb.minibus.listener.MiniListener
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.ext.deleteAndLog
 import me.camdenorrb.purrbot.impl.MessageInfo
-import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
-import net.dv8tion.jda.core.hooks.ListenerAdapter
+import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 
-class ModListener : ListenerAdapter() {
+class ModListener : MiniListener {
 
     lateinit var introHistory: MutableList<MessageInfo>
 
 
-    override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
+    @EventWatcher
+    private fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
 
         when(event.channel.idLong) {
             ChannelData.INTRO_ID -> onIntro(event)
@@ -25,7 +27,8 @@ class ModListener : ListenerAdapter() {
 
     }
 
-    override fun onGuildMessageDelete(event: GuildMessageDeleteEvent) {
+    @EventWatcher
+    private fun onGuildMessageDelete(event: GuildMessageDeleteEvent) {
 
         if (event.channel.idLong != ChannelData.INTRO_ID) return
 
@@ -39,12 +42,13 @@ class ModListener : ListenerAdapter() {
     }
 
 
+    // Text channel handlers
 
-    fun onMain(event: GuildMessageReceivedEvent) {
+    private fun onMain(event: GuildMessageReceivedEvent) {
 
     }
 
-    fun onIntro(event: GuildMessageReceivedEvent) {
+    private fun onIntro(event: GuildMessageReceivedEvent) {
 
         val message = event.message
         val content = message.contentRaw
@@ -98,7 +102,7 @@ class ModListener : ListenerAdapter() {
 
     }
 
-    fun onSnapCode(event: GuildMessageReceivedEvent) {
+    private fun onSnapCode(event: GuildMessageReceivedEvent) {
 
         val message = event.message
 
@@ -107,7 +111,7 @@ class ModListener : ListenerAdapter() {
         }
     }
 
-    fun onOneWordStory(event: GuildMessageReceivedEvent) {
+    private fun onOneWordStory(event: GuildMessageReceivedEvent) {
 
         val message = event.message
 

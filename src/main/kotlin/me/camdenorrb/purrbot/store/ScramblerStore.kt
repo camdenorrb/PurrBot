@@ -3,9 +3,9 @@ package me.camdenorrb.purrbot.store
 import me.camdenorrb.kcommons.store.struct.MappedStore
 import me.camdenorrb.kdi.ext.inject
 import me.camdenorrb.purrbot.PurrBot
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
 import java.io.File
 
 class ScramblerStore(val scramblerFolder: File, val jda: JDA = inject(), val guild: Guild = PurrBot.mainGuild) : MappedStore<Long, ScramblerStore.ScramblerData>() {

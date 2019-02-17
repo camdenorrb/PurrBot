@@ -1,8 +1,8 @@
 package me.camdenorrb.purrbot.store
 
 import me.camdenorrb.kcommons.store.struct.MappedStore
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Member
 
 class MemberStore(val guild: Guild, val scramblerStore: ScramblerStore) : MappedStore<Long, MemberStore.PurrMember>() {
 
@@ -15,7 +15,8 @@ class MemberStore(val guild: Guild, val scramblerStore: ScramblerStore) : Mapped
 
 
     fun getOrMake(member: Member): PurrMember {
-        return getOrMake(member.user.idLong)
+        val id = member.user.idLong
+        return get(id) ?: PurrMember(member).apply { register(id, this) }
     }
 
     fun getOrMake(key: Long): PurrMember {
