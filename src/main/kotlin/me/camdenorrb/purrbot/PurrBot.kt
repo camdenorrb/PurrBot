@@ -7,13 +7,14 @@ import me.camdenorrb.purrbot.cmd.impl.CatCmd
 import me.camdenorrb.purrbot.cmd.impl.LeaderBoardCmd
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.data.GuildData
+import me.camdenorrb.purrbot.game.engine.GameEngine
 import me.camdenorrb.purrbot.game.impl.ScrambleGame
-import me.camdenorrb.purrbot.game.manager.GameManager
+import me.camdenorrb.purrbot.game.impl.TriviaGame
 import me.camdenorrb.purrbot.listeners.ModListener
 import me.camdenorrb.purrbot.store.CmdStore
 import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.store.ScramblerStore
-import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.core.JDA
 import java.io.File
 
 class PurrBot(val jda: JDA = inject()) : ModuleStruct() {
@@ -21,7 +22,7 @@ class PurrBot(val jda: JDA = inject()) : ModuleStruct() {
     override val name = "PurrBot"
 
 
-    val gameManager = GameManager(300_000, 600_000)
+    val gameManager = GameEngine(0, 600_000)
 
     val scramblerFolder = File("Scramblers").apply { mkdirs() }
 
@@ -44,7 +45,7 @@ class PurrBot(val jda: JDA = inject()) : ModuleStruct() {
 
         modules.forEach { it.enable() }
 
-        gameManager.register(ScrambleGame(scramblerFolder, memberStore))
+        gameManager.register(TriviaGame(), ScrambleGame(scramblerFolder, memberStore))
         gameManager.enable()
 
         jda.addEventListener(ModListener())

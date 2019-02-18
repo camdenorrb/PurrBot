@@ -1,8 +1,8 @@
 package me.camdenorrb.purrbot.game.struct
 
 import me.camdenorrb.kdi.ext.inject
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.entities.TextChannel
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.entities.TextChannel
 import java.util.*
 import kotlin.concurrent.timer
 

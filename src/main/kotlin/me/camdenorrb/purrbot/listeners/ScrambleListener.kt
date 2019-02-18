@@ -12,9 +12,9 @@ import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.tasks.ScrambleTask
 import me.camdenorrb.purrbot.utils.createEmbed
 import me.camdenorrb.purrbot.variables.SYMBOLS_REGEX
-import net.dv8tion.jda.api.MessageBuilder
-import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 import java.io.File
 

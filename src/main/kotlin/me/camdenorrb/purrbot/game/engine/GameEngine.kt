@@ -1,4 +1,4 @@
-package me.camdenorrb.purrbot.game.manager
+package me.camdenorrb.purrbot.game.engine
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -11,7 +11,7 @@ import me.camdenorrb.minibus.listener.MiniListener
 import me.camdenorrb.purrbot.events.game.GameEndEvent
 import me.camdenorrb.purrbot.game.struct.Game
 
-open class GameManager(val initStartDelay: Long, val startGameDelay: Long, val miniBus: MiniBus = inject()) : ListStore<Game>(), MiniListener {
+open class GameEngine(val initStartDelay: Long, val startGameDelay: Long = initStartDelay, val miniBus: MiniBus = inject()) : ListStore<Game>(), MiniListener {
 
     override val name = "Game Manager"
 
@@ -21,14 +21,15 @@ open class GameManager(val initStartDelay: Long, val startGameDelay: Long, val m
 
 
     override fun onEnable() {
-        GlobalScope.launch {
 
-            delay(initStartDelay)
+        GlobalScope.launch {
 
             if (!isEnabled) return@launch
 
+            delay(initStartDelay)
+
+            miniBus.register(this@GameEngine)
             currentGame = startNextGame()
-            miniBus.register(this@GameManager)
         }
     }
 
@@ -57,7 +58,7 @@ open class GameManager(val initStartDelay: Long, val startGameDelay: Long, val m
 
         check(isEnabled)
 
-        if (!currentGame.isEnabled) currentGame.disable()
+        if (::currentGame.isInitialized && !currentGame.isEnabled) currentGame.disable()
         return pickNextGame().apply { enable() }
     }
 

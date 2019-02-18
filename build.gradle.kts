@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
 
-    implementation("net.dv8tion:JDA:+")
+    implementation("net.dv8tion:JDA:3.8.2_459")
     implementation("org.slf4j:slf4j-simple:+")
     implementation("com.google.code.gson:gson:2.8.5")
 

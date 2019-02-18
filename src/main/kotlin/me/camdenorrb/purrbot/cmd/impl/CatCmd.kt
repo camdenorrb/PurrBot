@@ -6,11 +6,11 @@ import me.camdenorrb.purrbot.cmd.struct.MemberCmd
 import me.camdenorrb.purrbot.cmd.struct.context.MemberCmdContext
 import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.data.WebsiteData
-import me.camdenorrb.purrbot.net.response.CatResponse
+import me.camdenorrb.purrbot.net.response.cat.CatResponse
 import me.camdenorrb.purrbot.utils.createEmbed
-import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.entities.MessageChannel
+import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.MessageChannel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.awt.Color

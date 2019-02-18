@@ -5,7 +5,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.camdenorrb.kdi.ext.inject
 import me.camdenorrb.minibus.event.EventWatcher
-import me.camdenorrb.purrbot.data.ChannelData
 import me.camdenorrb.purrbot.events.scramble.ScrambleTimeoutEvent
 import me.camdenorrb.purrbot.events.scramble.ScrambleWinEvent
 import me.camdenorrb.purrbot.ext.findPair
@@ -15,10 +14,10 @@ import me.camdenorrb.purrbot.rank.ScrambleRank
 import me.camdenorrb.purrbot.store.MemberStore
 import me.camdenorrb.purrbot.utils.createEmbed
 import me.camdenorrb.purrbot.variables.SYMBOLS_REGEX
-import net.dv8tion.jda.api.MessageBuilder
-import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 import java.io.File
 
@@ -27,9 +26,11 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
     override val name = "Scramble"
 
 
+    @Volatile
     var startTime: Long? = null
         private set
 
+    @Volatile
     var currentWord: String? = null
         private set
 
@@ -40,7 +41,7 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
 
 
     @EventWatcher
-    fun onWin(event: ScrambleWinEvent) {
+    private fun onWin(event: ScrambleWinEvent) {
 
         val winner = event.winner
         val member = winner.member
@@ -72,7 +73,7 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
     }
 
     @EventWatcher
-    fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
+    private fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
 
         val winnerFile = File(scramblerFolder, event.user.id)
         if (!winnerFile.exists()) return
@@ -87,21 +88,20 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
     }
 
     @EventWatcher
-    fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
+    private fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
 
         val startTime = this.startTime ?: return
 
         val currentWord = this.currentWord ?: return
 
 
-        if (event.channel.idLong != ChannelData.MAIN_CHAT_ID) {
+        if (event.channel.idLong != channel.idLong) {
             return
         }
 
         if (!event.message.contentStripped.replace(SYMBOLS_REGEX, "").equals(currentWord, true)) {
             return
         }
-
 
         val wins = memberStore.getOrMake(event.member).scramblerData.wins + 1
 
@@ -131,12 +131,11 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
 
         channel.sendMessage(embed1).queue()
 
-
         GlobalScope.launch {
 
             delay(300_000)
 
-            if (startTime == null || currentWord == null || currentWord != word) {
+            if (!isEnabled || startTime == null || currentWord == null || currentWord != word) {
                 return@launch
             }
 
@@ -148,6 +147,8 @@ class ScrambleGame(val scramblerFolder: File, val memberStore: MemberStore) : Ga
             solved(null)
             channel.sendMessage(embed2).queue()
         }
+
+        super.onEnable()
     }
 
 

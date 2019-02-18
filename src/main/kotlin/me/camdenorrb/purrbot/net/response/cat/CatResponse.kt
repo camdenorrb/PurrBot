@@ -1,4 +1,4 @@
-package me.camdenorrb.purrbot.net.response
+package me.camdenorrb.purrbot.net.response.cat
 
 import com.google.gson.annotations.SerializedName
 

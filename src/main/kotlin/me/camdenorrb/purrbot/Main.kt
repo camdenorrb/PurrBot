@@ -6,9 +6,9 @@ import me.camdenorrb.minibus.MiniBus
 import me.camdenorrb.minibus.event.EventWatcher
 import me.camdenorrb.minibus.listener.MiniListener
 import me.camdenorrb.purrbot.impl.MiniEventManager
-import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.events.ReadyEvent
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.events.ReadyEvent
 import okhttp3.OkHttpClient
 import java.io.File
 
@@ -29,7 +29,7 @@ object Main : MiniListener {
     fun main(args: Array<String>) {
 
         jda = JDABuilder(File("token.txt").readText())
-            .addEventListeners(this)
+            .addEventListener(this)
             .setEventManager(MiniEventManager(miniBus))
             .build()
 
@@ -47,7 +47,7 @@ object Main : MiniListener {
         PurrBot().enable()
 
         println("\nThe bot is now ready")
-        println("Invite URL: ${jda.getInviteUrl()}")
+        println("Invite URL: ${jda.asBot().getInviteUrl()}")
     }
 
 }
